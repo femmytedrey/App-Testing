@@ -8,13 +8,13 @@ import './App.css';
 
 function App() {
   const [toDo, setToDo] = useState([
-    {id: "1", title: "Task 1", status: "false"}
+    {id: "1", title: "Task 1", status: "false"},
     {id: "2", title: "Task 2", status: "false"}
   ])
 
   const [newTask, setNewTask] = useState('')
   const [updateData, setUpdateData] = useState('')
-  
+
   return (
     <div className="container App">
       <h2>To Do List App (ReactJS)</h2>
