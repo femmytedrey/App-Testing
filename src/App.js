@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -16,21 +16,37 @@ function App() {
 
   const [newTask, setNewTask] = useState('')
   const [updateData, setUpdateData] = useState('')
+  const inputRef = useRef(null);
+
 
   const addTask = () => {
-    
+    if(newTask){
+      let num = toDo.length + 1;
+      let newEntry = { id: num, title: newTask, status: false}
+      setToDo([...toDo, newEntry])
+      setNewTask('');
+
+      inputRef.current.focus()
+    }
   } 
 
   /////////////////////////////////////////////////
 
-  const deleteTask = () => {
-
+  const deleteTask = (id) => {
+    let newTasks = toDo.filter((task) => task.id !== id)
+    setToDo(newTasks)
   }
 
   /////////////////////////////////////////////////
 
-  const markTask = (id) => {
-
+  const markDone = (id) => {
+    let newTask = toDo.map((task) => {
+      if(task.id === id){
+        return ({...task, status: !task.status});
+      }
+      return task;
+    })
+    setToDo(newTask)
   }
 
   /////////////////////////////////////////////////
@@ -57,12 +73,24 @@ function App() {
     <div className="container App">
       <h2>To Do List App (ReactJS)</h2>
 
-      <div className = " row">
-        <div className = "col">
+      {/* Update Task       */}
+
+      <div className='row'>
+        <div className='col'>
           <input className='form-control form-control-lg'/>
         </div>
+        <div className='col-auto'>
+          <button type = "button" className='btn btn-lg btn-success mr-20'>Update</button>
+          <button type = "button" className='btn btn-lg btn-warning mr-20'>Cancel</button>
+        </div>
+      </div>
+
+      <div className = "row">
+        <div className = "col">
+          <input ref={inputRef} value = {newTask} onChange={(e) => setNewTask(e.target.value)} className='form-control form-control-lg'/>
+        </div>
         <div className = "col-auto">
-          
+        <button onClick={addTask} type="button" className="btn btn-lg btn-success">Add Task</button>
         </div>
       </div>
 
@@ -80,13 +108,19 @@ function App() {
                   <span className = 'taskText'>{task.title}</span>
                 </div>
                 <div className='iconsWrap'>
-                  <span title = "Completed / Not Completed">
+                  <span title = "Completed / Not Completed" onClick={ (e) => markDone(task.id) }>
                     <FontAwesomeIcon icon={faCircleCheck} />
                   </span>
-                  <span title = "Edit">
+
+                  {!task.status && (
+                    <span title = "Edit">
                     <FontAwesomeIcon icon={faPen} />
-                  </span>
-                  <span title = "Delete">
+                    </span>
+                  )}
+                  
+
+
+                  <span title = "Delete" onClick={() => deleteTask(task.id)}>
                     <FontAwesomeIcon icon={faTrashCan} />
                   </span>
                 </div>
