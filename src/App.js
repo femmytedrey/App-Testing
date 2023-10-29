@@ -11,7 +11,7 @@ function App() {
     // {id: "1", title: "Task 1", status: "false"},
     // {id: "2", title: "Task 2", status: "false"},
     {"id": 2, "title": "Task 2", "status": false},
-    {"id": 2, "title": "Task 2", "status": false}
+    {"id": 1, "title": "Task 1", "status": false}
   ]);
 
   const [newTask, setNewTask] = useState('')
@@ -61,6 +61,7 @@ function App() {
 
       {toDo && toDo.length ? '' : 'No Task Added'}
       {toDo && toDo
+        .sort((a, b) => a.id > b.id ? 1 : -1)
         .map( (task, index) => {
           return(
             <React.Fragment key = {task.id}>
@@ -69,9 +70,22 @@ function App() {
                   <span className = 'taskNumber'>{index + 1}</span>
                   <span className = 'taskText'>{task.title}</span>
                 </div>
+                <div className='iconsWrap'>
+                  <span>
+                    <FontAwesomeIcon icon={faCircleCheck} />
+                  </span>
+                  <span>
+                    <FontAwesomeIcon icon={faPen} />
+                  </span>
+                  <span>
+                    <FontAwesomeIcon icon={faTrashCan} />
+                  </span>
+                </div>
               </div>
               
             </React.Fragment>
+
+            
           )
         })
       }
