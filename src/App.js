@@ -57,6 +57,15 @@ function App() {
     <div className="container App">
       <h2>To Do List App (ReactJS)</h2>
 
+      <div className = " row">
+        <div className = "col">
+          <input className='form-control form-control-lg'/>
+        </div>
+        <div className = "col-auto">
+          
+        </div>
+      </div>
+
       {/* display ToDo */}
 
       {toDo && toDo.length ? '' : 'No Task Added'}
@@ -71,13 +80,13 @@ function App() {
                   <span className = 'taskText'>{task.title}</span>
                 </div>
                 <div className='iconsWrap'>
-                  <span>
+                  <span title = "Completed / Not Completed">
                     <FontAwesomeIcon icon={faCircleCheck} />
                   </span>
-                  <span>
+                  <span title = "Edit">
                     <FontAwesomeIcon icon={faPen} />
                   </span>
-                  <span>
+                  <span title = "Delete">
                     <FontAwesomeIcon icon={faTrashCan} />
                   </span>
                 </div>
