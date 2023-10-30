@@ -7,12 +7,7 @@ import {
 import './App.css';
 
 function App() {
-  const [toDo, setToDo] = useState([
-    // {id: "1", title: "Task 1", status: "false"},
-    // {id: "2", title: "Task 2", status: "false"},
-    {"id": 2, "title": "Task 2", "status": false},
-    {"id": 1, "title": "Task 1", "status": false}
-  ]);
+  const [toDo, setToDo] = useState([]);
 
   const [newTask, setNewTask] = useState('')
   const [updateData, setUpdateData] = useState('')
@@ -82,24 +77,30 @@ function App() {
 
       {/* Update Task       */}
 
-      <div className='row'>
-        <div className='col'>
-          <input value={updateData && updateData.title} onChange={(e) => changeTask(e)} className='form-control form-control-lg'/>
-        </div>
-        <div className='col-auto'>
-          <button type = "button" onClick={updateTask} className='btn btn-lg btn-success mr-20'>Update</button>
-          <button type = "button" className='btn btn-lg btn-warning mr-20'>Cancel</button>
-        </div>
-      </div>
 
-      <div className = "row">
-        <div className = "col">
-          <input ref={inputRef} value = {newTask} onChange={(e) => setNewTask(e.target.value)} className='form-control form-control-lg'/>
+      {updateData && updateData ? (
+        <div className='row'>
+          <div className='col'>
+            <input value={updateData && updateData.title} onChange={(e) => changeTask(e)} className='form-control form-control-lg'/>
+          </div>
+          <div className='col-auto'>
+            <button type = "button" onClick={updateTask} className='btn btn-lg btn-success mr-20'>Update</button>
+            <button onClick={cancelUpdate} type = "button" className='btn btn-lg btn-warning mr-20'>Cancel</button>
+          </div>
         </div>
-        <div className = "col-auto">
-        <button onClick={addTask} type="button" className="btn btn-lg btn-success">Add Task</button>
+      ) : (
+        <div className = "row">
+          <div className = "col">
+            <input ref={inputRef} value = {newTask} onChange={(e) => setNewTask(e.target.value)} className='form-control form-control-lg'/>
+          </div>
+          <div className = "col-auto">
+          <button onClick={addTask} type="button" className="btn btn-lg btn-success">Add Task</button>
+          </div>
         </div>
-      </div>
+      )}
+      
+
+      
 
       {/* display ToDo */}
 
