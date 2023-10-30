@@ -52,19 +52,26 @@ function App() {
   /////////////////////////////////////////////////
 
   const cancelUpdate = () => {
-
+    setUpdateData('');
   }
 
   /////////////////////////////////////////////////
 
-  const changeTask = () => {
-
+  const changeTask = (e) => {
+    let newEntry = {
+      id: updateData.id,
+      title: e.target.value,
+      status: updateData.status ? true : false
+    }
+    setUpdateData(newEntry)
   }
 
   /////////////////////////////////////////////////
 
   const updateTask = () => {
-
+    let filterRecords = [...toDo].filter(task => task.id !== updateData.id);
+    let updatedObject = [...filterRecords, updateData]
+    setToDo(updatedObject)
   }
 
   /////////////////////////////////////////////////
@@ -77,10 +84,10 @@ function App() {
 
       <div className='row'>
         <div className='col'>
-          <input className='form-control form-control-lg'/>
+          <input value={updateData && updateData.title} onChange={(e) => changeTask(e)} className='form-control form-control-lg'/>
         </div>
         <div className='col-auto'>
-          <button type = "button" className='btn btn-lg btn-success mr-20'>Update</button>
+          <button type = "button" onClick={updateTask} className='btn btn-lg btn-success mr-20'>Update</button>
           <button type = "button" className='btn btn-lg btn-warning mr-20'>Cancel</button>
         </div>
       </div>
@@ -113,7 +120,7 @@ function App() {
                   </span>
 
                   {!task.status && (
-                    <span title = "Edit">
+                    <span title = "Edit" onClick={() => setUpdateData({id: task.id, title: task.title, status: task.status ? true : false})}>
                     <FontAwesomeIcon icon={faPen} />
                     </span>
                   )}
