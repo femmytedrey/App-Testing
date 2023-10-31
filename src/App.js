@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import AddTask from './components/AddTask.jsx'
 import UpdateTask from './components/UpdateTask.jsx'
 import ToDo from './components/ToDo.jsx'
@@ -12,9 +12,27 @@ function App() {
   const [updateData, setUpdateData] = useState('')
   const inputRef = useRef(null);
 
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+    if (storedTasks) {
+      console.log('Tasks loaded from localStorage:', storedTasks);
+      setToDo(storedTasks);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(toDo));
+    console.log('Tasks saved to localStorage:', toDo);
+  }, [toDo]);
+  
+  
+
 
   const addTask = () => {
-    if(newTask){
+    if (newTask.trim() === ''){
+      alert('Task field cannot be empty.');
+    }
+    else {
       let num = toDo.length + 1;
       let newEntry = { id: num, title: newTask, status: false}
       setToDo([...toDo, newEntry])
@@ -63,18 +81,24 @@ function App() {
   /////////////////////////////////////////////////
 
   const updateTask = () => {
-    // Find the existing task being updated
-    const existingTask = toDo.find((task) => task.id === updateData.id);
-  
-    // Check if the text is the same as the existing task
-    if (existingTask.title === updateData.title) {
-      alert("No changes in the text field.");
+    if(updateData.title.trim() === ''){
+      alert('Edit field cannot be empty')
     } else {
-      // Update the task only if there are changes
-      let filterRecords = [...toDo].filter((task) => task.id !== updateData.id);
-      let updatedObject = [...filterRecords, updateData];
-      setToDo(updatedObject);
+      // Find the existing task being updated
+      const existingTask = toDo.find((task) => task.id === updateData.id);
+    
+      // Check if the text is the same as the existing task
+      if (existingTask.title === updateData.title) {
+        alert("No changes in the text field.");
+      } 
+      else {
+        // Update the task only if there are changes
+        let filterRecords = [...toDo].filter((task) => task.id !== updateData.id);
+        let updatedObject = [...filterRecords, updateData];
+        setToDo(updatedObject);
+      }
     }
+    
   }
 
   /////////////////////////////////////////////////
